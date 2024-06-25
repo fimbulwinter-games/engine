@@ -17,7 +17,6 @@ public class Engine {
 
     public void tick() {
         systems.forEach(entityStorage::runSystem);
-        ;
     }
 
     public Entity instantiate(Set<? extends Component> componentSet) {
