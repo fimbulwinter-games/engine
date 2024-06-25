@@ -23,9 +23,9 @@ public class Transform implements Component {
     @Override
     public String toString() {
         return "Transform{" +
-                "position=" + position +
-                ", rotation=" + rotation +
-                ", scale=" + scale +
+                "P(" + position.x() + ", " + position.y() + ", " + position.z() + ")" +
+                ", R(" + rotation.x() + ", " + rotation.y() + ", " + rotation.z() + ")" +
+                ", S(" + scale.x() + ", " + scale.y() + ", " + scale.z() + ")" +
                 '}';
     }
 

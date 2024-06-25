@@ -11,11 +11,12 @@ public class TestMain {
     public static void main(String[] args) {
         final var game = new Engine();
 
-        game.instantiate(Set.of(new Transform()));
         game.registerSystems(new TestSystems());
+
         game.tick();
         game.tick();
-        game.tick();
+        game.instantiate(Set.of(new Transform()));
+
         game.tick();
         game.tick();
     }
