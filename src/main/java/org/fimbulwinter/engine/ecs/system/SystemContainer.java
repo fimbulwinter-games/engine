@@ -34,7 +34,7 @@ public abstract class SystemContainer implements System {
 
     private List<Method> getAnnotatedMethods() {
         return Arrays.stream(getClass().getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(AutoInject.class))
+                .filter(method -> method.isAnnotationPresent(RegisterSystem.class))
                 .toList();
     }
 

@@ -2,7 +2,7 @@ package org.fimbulwinter.engine;
 
 import org.fimbulwinter.engine.ecs.Engine;
 import org.fimbulwinter.engine.ecs.components.Transform;
-import org.fimbulwinter.engine.ecs.system.AutoInject;
+import org.fimbulwinter.engine.ecs.system.RegisterSystem;
 import org.fimbulwinter.engine.ecs.system.SystemContainer;
 
 import java.util.Set;
@@ -23,12 +23,12 @@ public class TestMain {
 
 
     public static class TestSystems extends SystemContainer {
-        @AutoInject
+        @RegisterSystem
         public void move(Transform transform) {
             transform.setPosition(transform.getPosition().add(0, 1, 0));
         }
 
-        @AutoInject
+        @RegisterSystem
         public void print(Transform transform) {
             System.out.println(transform);
         }
