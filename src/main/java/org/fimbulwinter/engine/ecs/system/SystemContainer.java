@@ -4,23 +4,42 @@ import org.fimbulwinter.engine.ecs.Component;
 import org.fimbulwinter.engine.ecs.Entity;
 import org.fimbulwinter.engine.ecs.system.exception.DuplicateTypeRuntimeException;
 import org.fimbulwinter.engine.ecs.system.exception.InvalidTypeRuntimeException;
+import org.joor.Reflect;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-public interface SystemContainer {
+public interface SystemContainer extends System {
+
+    default Map<Class<?>, ? extends Component> getComponentTypeMap(Set<? extends Component> components) {
+        final var componentTypeMap = new HashMap<Class<?>, Component>();
+        for (final var component : components) {
+            componentTypeMap.put(component.getClass(), component);
+        }
+        return componentTypeMap;
+    }
 
     default void run(Entity entity, Set<? extends Component> components) {
-        final var componentList = components.stream().toList();
+        final var componentTypeMap = getComponentTypeMap(components);
+        final var methods = getAnnotatedMethods();
+        for (final var method : methods) {
+            final var arguments = new ArrayList<Component>();
+            for (var parameter : method.getParameters()) {
+                arguments.add(componentTypeMap.get(parameter.getType()));
+            }
+            Reflect.on(this).call(method.getName(), arguments.toArray());
+        }
+
+    }
+
+    default List<Method> getAnnotatedMethods() {
+        return Arrays.stream(getClass().getDeclaredMethods())
+                .filter(method -> method.isAnnotationPresent(AutoInject.class))
+                .toList();
     }
 
     default void validateSystems() {
-        Arrays.stream(getClass().getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(AutoInject.class))
-                .forEach(this::validateSystem);
+        getAnnotatedMethods().forEach(this::validateSystem);
     }
 
     default void validateSystem(Method method) {

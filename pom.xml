@@ -13,12 +13,19 @@
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <joor.version>0.9.14</joor.version>
+
         <lwjgl.version>3.3.3</lwjgl.version>
         <lwjgl.natives>natives-windows</lwjgl.natives>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>joor</artifactId>
+                <version>${joor.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.lwjgl</groupId>
                 <artifactId>lwjgl-bom</artifactId>
@@ -38,6 +45,10 @@
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>joor</artifactId>
         </dependency>
         <dependency>
             <groupId>org.lwjgl</groupId>
