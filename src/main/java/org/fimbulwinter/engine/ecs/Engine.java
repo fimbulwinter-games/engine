@@ -29,7 +29,7 @@ public class Engine {
     }
 
     public void registerSystems(SystemContainer systemContainer) {
-        systemContainer.validateSystems();
+        systemContainer.scanSystems();
         systemContainers.add(systemContainer);
     }
 
