@@ -9,9 +9,8 @@ import org.joor.Reflect;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public interface SystemContainer extends System {
-
-    default Map<Class<?>, ? extends Component> getComponentTypeMap(Set<? extends Component> components) {
+public abstract class SystemContainer implements System {
+    private Map<Class<?>, ? extends Component> getComponentTypeMap(Set<? extends Component> components) {
         final var componentTypeMap = new HashMap<Class<?>, Component>();
         for (final var component : components) {
             componentTypeMap.put(component.getClass(), component);
@@ -19,7 +18,7 @@ public interface SystemContainer extends System {
         return componentTypeMap;
     }
 
-    default void run(Entity entity, Set<? extends Component> components) {
+    public void run(Entity entity, Set<? extends Component> components) {
         final var componentTypeMap = getComponentTypeMap(components);
         final var methods = getAnnotatedMethods();
         for (final var method : methods) {
@@ -32,23 +31,24 @@ public interface SystemContainer extends System {
 
     }
 
-    default List<Method> getAnnotatedMethods() {
+
+    private List<Method> getAnnotatedMethods() {
         return Arrays.stream(getClass().getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(AutoInject.class))
                 .toList();
     }
 
-    default void validateSystems() {
+    public void validateSystems() {
         getAnnotatedMethods().forEach(this::validateSystem);
     }
 
-    default void validateSystem(Method method) {
+    private void validateSystem(Method method) {
         Objects.requireNonNull(method);
         validateDuplicateParameters(method);
         validateParameterTypes(method);
     }
 
-    default void validateParameterTypes(Method method) {
+    private void validateParameterTypes(Method method) {
         for (var parameter : method.getParameters()) {
             final var parameterType = parameter.getType();
             final var parameterInterfaces = Arrays.stream(parameterType.getInterfaces()).toList();
@@ -59,7 +59,7 @@ public interface SystemContainer extends System {
         }
     }
 
-    default void validateDuplicateParameters(Method method) {
+    private void validateDuplicateParameters(Method method) {
         final var typeCounter = new HashSet<Class<?>>();
 
         for (var parameter : method.getParameters()) {

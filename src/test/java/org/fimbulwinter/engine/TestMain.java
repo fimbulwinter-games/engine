@@ -22,7 +22,7 @@ public class TestMain {
     }
 
 
-    public static class TestSystems implements SystemContainer {
+    public static class TestSystems extends SystemContainer {
         @AutoInject
         public void move(Transform transform) {
             transform.setPosition(transform.getPosition().add(0, 1, 0));
