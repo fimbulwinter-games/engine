@@ -41,7 +41,7 @@ public abstract class SystemContainer implements System {
             final var parameterType = parameter.getType();
             final var parameterInterfaces = Arrays.stream(parameterType.getInterfaces()).toList();
 
-            if (!parameterInterfaces.contains(Component.class)) {
+            if (!parameterInterfaces.contains(Component.class) && parameter.getType() != Entity.class) {
                 throw new InvalidTypeRuntimeException(method, SystemContainer.class, Component.class);
             }
         }
@@ -66,13 +66,16 @@ public abstract class SystemContainer implements System {
     public void run(Entity entity, Set<? extends Component> components) {
         final var componentTypeMap = getComponentTypeMap(components);
         for (final var system : systems) {
-            final var arguments = new ArrayList<Component>();
+            final var arguments = new ArrayList<>();
             for (var parameter : system.getParameters()) {
-                arguments.add(componentTypeMap.get(parameter.getType()));
+                if (parameter.getType() == Entity.class) {
+                    arguments.add(entity);
+                } else {
+                    arguments.add(componentTypeMap.get(parameter.getType()));
+                }
             }
             Reflect.on(this).call(system.getName(), arguments.toArray());
         }
-
     }
 
     private List<Method> getAnnotatedMethods() {

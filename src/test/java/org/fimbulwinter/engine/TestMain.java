@@ -1,6 +1,7 @@
 package org.fimbulwinter.engine;
 
 import org.fimbulwinter.engine.ecs.Engine;
+import org.fimbulwinter.engine.ecs.Entity;
 import org.fimbulwinter.engine.ecs.components.Transform;
 import org.fimbulwinter.engine.ecs.system.RegisterSystem;
 import org.fimbulwinter.engine.ecs.system.SystemContainer;
@@ -16,6 +17,8 @@ public class TestMain {
         game.tick();
         game.tick();
         game.instantiate(Set.of(new Transform()));
+        game.instantiate(Set.of(new Transform()));
+        game.instantiate(Set.of(new Transform()));
 
         game.tick();
         game.tick();
@@ -29,8 +32,8 @@ public class TestMain {
         }
 
         @RegisterSystem
-        public void print(Transform transform) {
-            System.out.println(transform);
+        public void print(Entity entity, Transform transform) {
+            System.out.println(entity.getId() + " " + transform);
         }
     }
 }
