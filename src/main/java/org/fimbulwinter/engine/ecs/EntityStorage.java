@@ -1,7 +1,6 @@
 package org.fimbulwinter.engine.ecs;
 
 import org.fimbulwinter.engine.ecs.system.System;
-import org.fimbulwinter.engine.ecs.system.SystemContainer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,9 +40,5 @@ public class EntityStorage {
             final var componentSet = createComponentSet(components);
             system.run(entity, componentSet);
         });
-    }
-
-    public void runSystemContainer(SystemContainer container) {
-        entities.forEach((entity, components) -> container.run(entity, createComponentSet(components)));
     }
 }
