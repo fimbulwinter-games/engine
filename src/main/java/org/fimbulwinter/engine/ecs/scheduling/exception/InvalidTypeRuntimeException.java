@@ -1,6 +1,7 @@
-package org.fimbulwinter.engine.ecs.system.exception;
+package org.fimbulwinter.engine.ecs.scheduling.exception;
 
 import org.fimbulwinter.engine.ecs.Entity;
+import org.fimbulwinter.engine.ecs.system.exception.AutoinjectionRuntimeException;
 
 import java.lang.reflect.Method;
 
