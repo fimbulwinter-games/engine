@@ -1,5 +1,7 @@
-package org.fimbulwinter.engine.ecs;
+package org.fimbulwinter.engine.ecs.scheduling;
 
+import org.fimbulwinter.engine.ecs.Component;
+import org.fimbulwinter.engine.ecs.Entity;
 import org.fimbulwinter.engine.ecs.system.RegisterSystem;
 import org.fimbulwinter.engine.ecs.system.exception.DuplicateTypeRuntimeException;
 import org.fimbulwinter.engine.ecs.system.exception.InvalidTypeRuntimeException;

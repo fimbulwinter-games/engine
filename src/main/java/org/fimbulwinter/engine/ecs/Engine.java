@@ -1,6 +1,7 @@
 package org.fimbulwinter.engine.ecs;
 
 import org.fimbulwinter.engine.ecs.resource.ResourceStorage;
+import org.fimbulwinter.engine.ecs.scheduling.Scheduler;
 
 import java.util.Set;
 

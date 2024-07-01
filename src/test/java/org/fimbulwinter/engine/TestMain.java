@@ -2,7 +2,7 @@ package org.fimbulwinter.engine;
 
 import org.fimbulwinter.engine.ecs.Engine;
 import org.fimbulwinter.engine.ecs.Entity;
-import org.fimbulwinter.engine.ecs.components.Transform;
+import org.fimbulwinter.engine.ecs.component.Transform;
 import org.fimbulwinter.engine.ecs.system.RegisterSystem;
 
 import java.util.Set;

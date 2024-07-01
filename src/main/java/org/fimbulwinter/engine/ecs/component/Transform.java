@@ -1,4 +1,4 @@
-package org.fimbulwinter.engine.ecs.components;
+package org.fimbulwinter.engine.ecs.component;
 
 import org.fimbulwinter.engine.ecs.Component;
 import org.joml.Vector3f;

@@ -2,7 +2,7 @@ package org.fimbulwinter.engine.ecs;
 
 import java.util.Objects;
 
-public class Entity {
+public class Entity implements AutoInjectable {
     private final int id;
 
     public Entity(int id) {
