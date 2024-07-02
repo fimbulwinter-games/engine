@@ -3,7 +3,7 @@ package org.fimbulwinter.engine.ecs;
 import org.fimbulwinter.engine.ecs.resource.ResourceStorage;
 import org.fimbulwinter.engine.ecs.scheduling.Scheduler;
 
-import java.util.Set;
+import java.util.List;
 
 public class Engine {
     private final EntityStorage entityStorage = new EntityStorage();
@@ -17,8 +17,8 @@ public class Engine {
         entityStorage.runSystem(scheduler::tick);
     }
 
-    public Entity instantiate(Set<? extends Component> componentSet) {
-        return entityStorage.instantiate(componentSet);
+    public Entity instantiate(Component... components) {
+        return entityStorage.instantiate(List.of(components));
     }
 
     public void registerSystems(Class<?> systemContainer) {

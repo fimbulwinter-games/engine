@@ -2,14 +2,10 @@ package org.fimbulwinter.engine.ecs;
 
 import org.fimbulwinter.engine.ecs.system.System;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class EntityStorage {
-    private final Map<Entity, Map<String, ? extends Component>> entities = new HashMap<>();
+    private final Map<Entity, ComponentSet> entities = new HashMap<>();
     private int nextEntityId = 0;
 
     private Entity retrieveNewEntity() {
@@ -18,21 +14,19 @@ public class EntityStorage {
         return nextEntity;
     }
 
-    public Entity instantiate(Set<? extends Component> componentSet) {
-        Objects.requireNonNull(componentSet);
+    public Entity instantiate(Collection<? extends Component> components) {
+        Objects.requireNonNull(components);
 
-        final Map<String, Component> components = componentSet
-                .stream()
-                .collect(Collectors.toMap(Component::getComponentIdentifier, x -> x));
+        final var componentSet = new ComponentSet(components);
 
         final var newEntity = retrieveNewEntity();
-        entities.put(newEntity, components);
+        entities.put(newEntity, componentSet);
 
         return newEntity;
     }
 
-    private Set<? extends Component> createComponentSet(Map<String, ? extends Component> components) {
-        return components.values().stream().collect(Collectors.toUnmodifiableSet());
+    private Set<? extends Component> createComponentSet(ComponentSet componentSet) {
+        return new HashSet<Component>(componentSet.getComponents());
     }
 
     public void runSystem(System system) {
