@@ -22,6 +22,6 @@ public class Engine {
     }
 
     public void registerSystems(Class<?> systemContainer) {
-        scheduler.addSystems(systemContainer);
+        scheduler.registerSystems(systemContainer);
     }
 }

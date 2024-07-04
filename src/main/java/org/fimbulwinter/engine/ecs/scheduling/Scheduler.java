@@ -1,45 +1,43 @@
 package org.fimbulwinter.engine.ecs.scheduling;
 
+import org.fimbulwinter.engine.ecs.AutoInjectable;
 import org.fimbulwinter.engine.ecs.Component;
 import org.fimbulwinter.engine.ecs.Entity;
 import org.fimbulwinter.engine.ecs.system.RegisterSystem;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
 public class Scheduler {
-    private final Set<Method> systems = new HashSet<>();
+    private final Set<RegisteredSystem> registeredSystems = new HashSet<>();
 
     public Scheduler() {
     }
 
     public void tick(Entity entity, Set<? extends Component> components) {
         final var componentTypeMap = getComponentTypeMap(components);
-        for (final var system : systems) {
-            final var arguments = new ArrayList<>();
-            for (var parameter : system.getParameters()) {
+        registeredSystems.forEach(system -> {
+            final List<AutoInjectable> arguments = new ArrayList<>();
+            final var parameters = system.getParameters();
+
+            for (var parameter : parameters) {
                 if (parameter.getType() == Entity.class) {
                     arguments.add(entity);
                 } else {
                     arguments.add(componentTypeMap.get(parameter.getType()));
                 }
             }
-            try {
-                system.invoke(null, arguments.toArray());
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-        }
+            system.run(arguments.toArray(new AutoInjectable[0]));
+        });
     }
 
-    private void addSystem(Method method) {
-        systems.add(method);
+    private void registerSystem(RegisteredSystem system) {
+        registeredSystems.add(system);
     }
 
-    public void addSystems(Class<?> systemContainer) {
-        List<Method> systems = getAnnotatedMethods(systemContainer);
-        systems.forEach(this::addSystem);
+    public void registerSystems(Class<?> systemContainer) {
+        List<Method> systems = findAnnotatedMethods(systemContainer);
+        systems.forEach(system -> this.registerSystem(new RegisteredSystem(system)));
     }
 
     private Map<Class<?>, ? extends Component> getComponentTypeMap(Set<? extends Component> components) {
@@ -50,7 +48,7 @@ public class Scheduler {
         return componentTypeMap;
     }
 
-    private List<Method> getAnnotatedMethods(Class<?> systemContainer) {
+    private List<Method> findAnnotatedMethods(Class<?> systemContainer) {
         return Arrays.stream(systemContainer.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(RegisterSystem.class))
                 .toList();

@@ -8,28 +8,29 @@ import org.fimbulwinter.engine.ecs.scheduling.exception.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
-public class SystemTask implements Runnable {
+public class RegisteredSystem {
     final Method system;
-    final AutoInjectable[] parameters;
+//    final AutoInjectable[] parameters;
 
-    public SystemTask(Method system) {
+    public RegisteredSystem(Method system) {
         this(system, List.of());
     }
 
-    public SystemTask(Method system, List<AutoInjectable> parameters) {
+    public RegisteredSystem(Method system, List<AutoInjectable> parameters) {
         this(system, parameters.toArray(new AutoInjectable[0]));
     }
 
-    public SystemTask(Method system, AutoInjectable[] parameters) {
+    public RegisteredSystem(Method system, AutoInjectable[] parameters) {
         validateSystem(system);
-        validateInjectedParameters(system, parameters);
+//        validateInjectedParameters(system, parameters);
         this.system = system;
-        this.parameters = parameters;
+//        this.parameters = parameters;
     }
 
 
@@ -84,8 +85,7 @@ public class SystemTask implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
+    public void run(AutoInjectable[] parameters) {
         try {
             system.invoke(null, (Object[]) parameters);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -98,14 +98,20 @@ public class SystemTask implements Runnable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SystemTask systemTask = (SystemTask) o;
-        return system.equals(systemTask.system) && Arrays.equals(parameters, systemTask.parameters);
+        RegisteredSystem registeredSystem = (RegisteredSystem) o;
+        return system.equals(registeredSystem.system);
+//        return system.equals(systemTask.system) && Arrays.equals(parameters, systemTask.parameters);
     }
 
     @Override
     public int hashCode() {
         int result = system.hashCode();
-        result = 31 * result + Arrays.hashCode(parameters);
+        result = 31 * result;
+//        result = 31 * result + Arrays.hashCode(parameters);
         return result;
+    }
+
+    public Parameter[] getParameters() {
+        return system.getParameters();
     }
 }
