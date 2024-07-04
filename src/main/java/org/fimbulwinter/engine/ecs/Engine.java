@@ -7,9 +7,9 @@ import java.util.List;
 
 public class Engine {
     private final EntityStorage entityStorage = new EntityStorage();
+    private final SystemStorage systemStorage = new SystemStorage();
     private final Scheduler scheduler = new Scheduler();
     private final ResourceStorage resourceStorage = new ResourceStorage();
-    private final SystemStorage systemStorage = new SystemStorage();
 
     public void run() {
     }
@@ -23,5 +23,6 @@ public class Engine {
     }
 
     public void registerSystems(Class<?> systemContainer) {
+        systemStorage.registerSystem(systemContainer);
     }
 }

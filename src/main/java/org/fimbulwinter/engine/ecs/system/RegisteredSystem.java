@@ -19,19 +19,10 @@ public class RegisteredSystem {
     final Method system;
 
     public RegisteredSystem(Method system) {
-        this(system, List.of());
-    }
-
-    public RegisteredSystem(Method system, List<AutoInjectable> parameters) {
-        this(system, parameters.toArray(new AutoInjectable[0]));
-    }
-
-    public RegisteredSystem(Method system, AutoInjectable[] parameters) {
         validateSystem(system);
         this.system = system;
     }
-
-
+    
     private void validateSystemParameterTypes(Method method) {
         for (var parameter : method.getParameters()) {
             final var parameterType = parameter.getType();
