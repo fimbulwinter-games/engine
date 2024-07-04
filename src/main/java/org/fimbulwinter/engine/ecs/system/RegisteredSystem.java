@@ -1,8 +1,9 @@
-package org.fimbulwinter.engine.ecs.scheduling;
+package org.fimbulwinter.engine.ecs.system;
 
 import org.fimbulwinter.engine.ecs.AutoInjectable;
 import org.fimbulwinter.engine.ecs.Component;
 import org.fimbulwinter.engine.ecs.Entity;
+import org.fimbulwinter.engine.ecs.scheduling.SystemTask;
 import org.fimbulwinter.engine.ecs.scheduling.exception.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -83,6 +84,10 @@ public class RegisteredSystem {
         if (system.getParameterCount() != parameterCount) {
             throw new IllegalParameterCountRuntimeException(system, parameterCount);
         }
+    }
+
+    public SystemTask generateSystemTask(List<AutoInjectable> arguments) {
+        return new SystemTask(system, arguments.toArray(new AutoInjectable[0]));
     }
 
     public void run(AutoInjectable[] parameters) {

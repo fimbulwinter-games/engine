@@ -4,6 +4,7 @@ import org.fimbulwinter.engine.ecs.AutoInjectable;
 import org.fimbulwinter.engine.ecs.Component;
 import org.fimbulwinter.engine.ecs.Entity;
 import org.fimbulwinter.engine.ecs.system.RegisterSystem;
+import org.fimbulwinter.engine.ecs.system.RegisteredSystem;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -27,7 +28,9 @@ public class Scheduler {
                     arguments.add(componentTypeMap.get(parameter.getType()));
                 }
             }
-            system.run(arguments.toArray(new AutoInjectable[0]));
+
+            SystemTask task = system.generateSystemTask(arguments);
+            task.run();
         });
     }
 
