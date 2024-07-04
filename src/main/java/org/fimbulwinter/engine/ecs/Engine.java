@@ -9,12 +9,13 @@ public class Engine {
     private final EntityStorage entityStorage = new EntityStorage();
     private final Scheduler scheduler = new Scheduler();
     private final ResourceStorage resourceStorage = new ResourceStorage();
+    private final SystemStorage systemStorage = new SystemStorage();
 
     public void run() {
     }
 
     public void tick() {
-        entityStorage.runSystem(scheduler::tick);
+
     }
 
     public Entity instantiate(Component... components) {
@@ -22,6 +23,5 @@ public class Engine {
     }
 
     public void registerSystems(Class<?> systemContainer) {
-        scheduler.registerSystems(systemContainer);
     }
 }

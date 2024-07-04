@@ -1,7 +1,5 @@
 package org.fimbulwinter.engine.ecs;
 
-import org.fimbulwinter.engine.ecs.system.System;
-
 import java.util.*;
 
 public class EntityStorage {
@@ -27,12 +25,5 @@ public class EntityStorage {
 
     private Set<? extends Component> createComponentSet(ComponentSet componentSet) {
         return new HashSet<Component>(componentSet.getComponents());
-    }
-
-    public void runSystem(System system) {
-        entities.forEach((entity, components) -> {
-            final var componentSet = createComponentSet(components);
-            system.run(entity, componentSet);
-        });
     }
 }
