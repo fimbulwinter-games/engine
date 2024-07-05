@@ -1,12 +1,11 @@
 package org.fimbulwinter.engine.ecs;
 
+import org.fimbulwinter.engine.ecs.resource.Resource;
+import org.fimbulwinter.engine.ecs.scheduling.SystemTask;
 import org.fimbulwinter.engine.ecs.system.RegisterSystem;
 import org.fimbulwinter.engine.ecs.system.RegisteredSystem;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class SystemStorage {
     private final Set<RegisteredSystem> registeredSystems = new HashSet<>();
@@ -24,7 +23,21 @@ public class SystemStorage {
         Arrays.stream(systemContainer.getDeclaredMethods())
                 .filter(x -> x.isAnnotationPresent(RegisterSystem.class))
                 .map(RegisteredSystem::new)
-                .forEach(registeredSystems::add);
+                .forEach(this::registerSystem);
+    }
+
+    public Set<SystemTask> generateSystemTasks(Map<Entity, ComponentSet> entities,
+                                               Collection<? extends Resource> resources) {
+        Objects.requireNonNull(entities);
+        Objects.requireNonNull(resources);
+
+        final Set<SystemTask> tasks = new HashSet<>();
+
+        for (var system : registeredSystems) {
+            tasks.addAll(system.generateSystemTasks(entities, resources));
+        }
+
+        return tasks;
     }
 
     @Override
