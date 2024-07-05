@@ -1,8 +1,9 @@
 package org.fimbulwinter.engine.ecs.system;
 
-import org.fimbulwinter.engine.ecs.AutoInjectable;
 import org.fimbulwinter.engine.ecs.Component;
+import org.fimbulwinter.engine.ecs.ComponentSet;
 import org.fimbulwinter.engine.ecs.Entity;
+import org.fimbulwinter.engine.ecs.resource.Resource;
 import org.fimbulwinter.engine.ecs.scheduling.SystemTask;
 import org.fimbulwinter.engine.ecs.scheduling.exception.DuplicateTypeRuntimeException;
 import org.fimbulwinter.engine.ecs.scheduling.exception.InvalidTypeRuntimeException;
@@ -10,10 +11,7 @@ import org.fimbulwinter.engine.ecs.scheduling.exception.NotStaticRuntimeExceptio
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class RegisteredSystem {
     final Method system;
@@ -22,13 +20,13 @@ public class RegisteredSystem {
         validateSystem(system);
         this.system = system;
     }
-    
+
     private void validateSystemParameterTypes(Method method) {
         for (var parameter : method.getParameters()) {
             final var parameterType = parameter.getType();
             final var parameterInterfaces = Arrays.stream(parameterType.getInterfaces()).toList();
 
-            if (!parameterInterfaces.contains(Component.class) && parameter.getType() != Entity.class) {
+            if (!(parameter.getType() == Entity.class || parameterInterfaces.contains(Component.class) || parameterInterfaces.contains(Resource.class))) {
                 throw new InvalidTypeRuntimeException(method, Component.class);
             }
         }
@@ -60,7 +58,15 @@ public class RegisteredSystem {
         }
     }
 
-    public SystemTask generateSystemTask(List<AutoInjectable> arguments) {
-        return new SystemTask(system, arguments.toArray(new AutoInjectable[0]));
+    public Set<SystemTask> generateSystemTasks(Map<Entity, ComponentSet> entities, Collection<? extends Resource> resources) {
+        Set<SystemTask> tasks = new HashSet<>();
+
+        for (var entry : entities.entrySet()) {
+            final var entity = entry.getKey();
+            final var componentSet = entry.getValue();
+
+            SystemTask.generateTask(system, entity, componentSet, resources).ifPresent(tasks::add);
+        }
+        return tasks;
     }
 }

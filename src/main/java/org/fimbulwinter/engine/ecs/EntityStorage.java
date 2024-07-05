@@ -23,6 +23,10 @@ public class EntityStorage {
         return newEntity;
     }
 
+    public Map<Entity, ComponentSet> getEntities() {
+        return Collections.unmodifiableMap(entities);
+    }
+
     private Set<? extends Component> createComponentSet(ComponentSet componentSet) {
         return new HashSet<Component>(componentSet.getComponents());
     }
