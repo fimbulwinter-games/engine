@@ -1,9 +1,11 @@
 package org.fimbulwinter.engine.ecs.scheduling;
 
-import org.fimbulwinter.engine.ecs.AutoInjectable;
-import org.fimbulwinter.engine.ecs.ComponentSet;
-import org.fimbulwinter.engine.ecs.Entity;
+import org.fimbulwinter.engine.ecs.component.ComponentSet;
+import org.fimbulwinter.engine.ecs.entity.Entity;
 import org.fimbulwinter.engine.ecs.resource.Resource;
+import org.fimbulwinter.engine.ecs.system.AutoInjectable;
+import org.fimbulwinter.engine.ecs.system.RegisterSystem;
+import org.fimbulwinter.engine.ecs.system.SystemStage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,14 +14,15 @@ import java.util.*;
 
 public class SystemTask implements Runnable {
     private final Method system;
+    private final SystemStage systemStage;
     private final AutoInjectable[] arguments;
-
     private SystemTask(Method system, AutoInjectable[] arguments) {
         Objects.requireNonNull(system);
         Objects.requireNonNull(arguments);
 
         this.system = system;
         this.arguments = arguments;
+        this.systemStage = system.getAnnotation(RegisterSystem.class).systemStage();
     }
 
     public static Optional<SystemTask> generateTask(Method system, Entity entity, ComponentSet components, Collection<? extends Resource> resources) {
@@ -55,6 +58,9 @@ public class SystemTask implements Runnable {
         }
     }
 
+    public SystemStage getSystemStage() {
+        return systemStage;
+    }
 
     @Override
     public final boolean equals(Object o) {

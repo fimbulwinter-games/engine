@@ -1,8 +1,8 @@
 package org.fimbulwinter.engine.ecs.system;
 
-import org.fimbulwinter.engine.ecs.Component;
-import org.fimbulwinter.engine.ecs.ComponentSet;
-import org.fimbulwinter.engine.ecs.Entity;
+import org.fimbulwinter.engine.ecs.component.Component;
+import org.fimbulwinter.engine.ecs.component.ComponentSet;
+import org.fimbulwinter.engine.ecs.entity.Entity;
 import org.fimbulwinter.engine.ecs.resource.Resource;
 import org.fimbulwinter.engine.ecs.scheduling.SystemTask;
 import org.fimbulwinter.engine.ecs.scheduling.exception.DuplicateTypeRuntimeException;
@@ -14,11 +14,17 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class RegisteredSystem {
-    final Method system;
+    private final Method system;
+    private final SystemStage systemStage;
 
     public RegisteredSystem(Method system) {
         validateSystem(system);
         this.system = system;
+        systemStage = system.getAnnotation(RegisterSystem.class).systemStage();
+    }
+
+    public SystemStage getSystemStage() {
+        return systemStage;
     }
 
     private void validateSystemParameterTypes(Method method) {

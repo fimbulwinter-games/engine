@@ -1,9 +1,9 @@
-package org.fimbulwinter.engine.ecs;
+package org.fimbulwinter.engine.ecs.system;
 
+import org.fimbulwinter.engine.ecs.component.ComponentSet;
+import org.fimbulwinter.engine.ecs.entity.Entity;
 import org.fimbulwinter.engine.ecs.resource.Resource;
 import org.fimbulwinter.engine.ecs.scheduling.SystemTask;
-import org.fimbulwinter.engine.ecs.system.RegisterSystem;
-import org.fimbulwinter.engine.ecs.system.RegisteredSystem;
 
 import java.util.*;
 

@@ -1,9 +1,13 @@
 package org.fimbulwinter.engine.ecs;
 
+import org.fimbulwinter.engine.ecs.component.Component;
+import org.fimbulwinter.engine.ecs.entity.Entity;
+import org.fimbulwinter.engine.ecs.entity.EntityStorage;
 import org.fimbulwinter.engine.ecs.resource.Resource;
 import org.fimbulwinter.engine.ecs.resource.ResourceStorage;
 import org.fimbulwinter.engine.ecs.scheduling.Scheduler;
 import org.fimbulwinter.engine.ecs.scheduling.SystemTask;
+import org.fimbulwinter.engine.ecs.system.SystemStorage;
 
 import java.util.List;
 import java.util.Set;

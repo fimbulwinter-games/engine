@@ -1,6 +1,6 @@
-package org.fimbulwinter.engine.ecs.component;
+package org.fimbulwinter.engine.ecs.component.base;
 
-import org.fimbulwinter.engine.ecs.Component;
+import org.fimbulwinter.engine.ecs.component.Component;
 import org.joml.Vector3f;
 
 import java.util.Objects;

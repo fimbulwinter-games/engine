@@ -1,4 +1,6 @@
-package org.fimbulwinter.engine.ecs;
+package org.fimbulwinter.engine.ecs.entity;
+
+import org.fimbulwinter.engine.ecs.system.AutoInjectable;
 
 import java.util.Objects;
 

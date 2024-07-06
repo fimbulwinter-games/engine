@@ -1,4 +1,4 @@
-package org.fimbulwinter.engine.ecs;
+package org.fimbulwinter.engine.ecs.component;
 
 import java.util.*;
 

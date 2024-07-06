@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 
 public @interface RegisterSystem {
-    SystemStage pass() default SystemStage.UPDATE;
+    SystemStage systemStage() default SystemStage.UPDATE;
 
 
 }
