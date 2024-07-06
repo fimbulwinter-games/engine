@@ -5,6 +5,7 @@ import org.fimbulwinter.engine.ecs.Entity;
 import org.fimbulwinter.engine.ecs.component.Transform;
 import org.fimbulwinter.engine.ecs.resource.Resource;
 import org.fimbulwinter.engine.ecs.system.RegisterSystem;
+import org.fimbulwinter.engine.ecs.system.SystemStage;
 import org.joml.Vector3f;
 
 public class TestMain {
@@ -29,7 +30,7 @@ public class TestMain {
             System.out.println("Entity: " + entity.getId() + " | " + t);
         }
 
-        @RegisterSystem
+        @RegisterSystem(pass = SystemStage.RENDER)
         public static void printResource(TestResource testResource) {
             System.out.println("Resource: " + testResource.a);
         }
