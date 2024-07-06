@@ -15,7 +15,6 @@ public class Engine {
     private final ResourceStorage resourceStorage = new ResourceStorage();
 
     public void run() {
-
     }
 
     public void tick() {
@@ -34,7 +33,7 @@ public class Engine {
     }
 
     public void registerResource(Resource resource) {
-        resourceStorage.insertResource(resource);
+        this.resourceStorage.insertResource(resource);
         regenerateScheduler();
     }
 
