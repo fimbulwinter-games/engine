@@ -9,29 +9,40 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Scheduler {
-    private final Map<SystemStage, Set<SystemTask>> systemTasks = new HashMap<>();
+    private final Map<SystemStage, Set<SystemTask>> workerThreadTasks = new HashMap<>();
+    private final Map<SystemStage, Set<SystemTask>> mainThreadTasks = new HashMap<>();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public Scheduler() {
         for (SystemStage stage : SystemStage.values()) {
-            systemTasks.put(stage, new HashSet<>());
+            workerThreadTasks.put(stage, new HashSet<>());
+            mainThreadTasks.put(stage, new HashSet<>());
         }
     }
 
     public void clear() {
-        systemTasks.values().forEach(Set::clear);
+        workerThreadTasks.values().forEach(Set::clear);
     }
 
     public void addTasks(Collection<? extends SystemTask> tasks) {
         for (SystemTask task : tasks) {
-            systemTasks.get(task.getSystemStage()).add(task);
+            switch (task.getTargetThread()) {
+                case WORKER:
+                    workerThreadTasks.get(task.getSystemStage()).add(task);
+                    break;
+                case MAIN:
+                    mainThreadTasks.get(task.getSystemStage()).add(task);
+                    break;
+            }
         }
     }
 
-    private void tick(Collection<SystemTask> tasks) {
+    private void tick(SystemStage stage) {
         final Set<Future<?>> futures = new HashSet<>();
 
-        tasks.forEach(task -> futures.add(executor.submit(task)));
+        workerThreadTasks.get(stage).forEach(task -> futures.add(executor.submit(task)));
+
+        mainThreadTasks.get(stage).forEach(SystemTask::run);
 
         futures.forEach(future -> {
             try {
@@ -44,7 +55,7 @@ public class Scheduler {
 
     public void tick() {
         for (var stage : SystemStage.values()) {
-            tick(systemTasks.get(stage));
+            tick(stage);
         }
     }
 }

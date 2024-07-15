@@ -1,5 +1,7 @@
 package org.fimbulwinter.engine.ecs.system;
 
+import org.fimbulwinter.engine.ecs.scheduling.TargetThread;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,5 +13,6 @@ import java.lang.annotation.Target;
 public @interface RegisterSystem {
     SystemStage systemStage() default SystemStage.UPDATE;
 
+    TargetThread targetThread() default TargetThread.WORKER;
 
 }
