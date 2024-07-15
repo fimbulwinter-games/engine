@@ -20,6 +20,14 @@ public class Transform implements Component {
         this(new Vector3f(), new Vector3f(), new Vector3f());
     }
 
+    public Transform(Vector3f position) {
+        this(position, new Vector3f(), new Vector3f());
+    }
+
+    public Transform(Vector3f position, Vector3f rotation) {
+        this(position, rotation, new Vector3f());
+    }
+
     @Override
     public String toString() {
         return "Transform{" +
