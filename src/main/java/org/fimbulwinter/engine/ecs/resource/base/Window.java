@@ -1,6 +1,7 @@
 package org.fimbulwinter.engine.ecs.resource.base;
 
 import org.fimbulwinter.engine.ecs.component.Component;
+import org.fimbulwinter.engine.ecs.scheduling.TargetThread;
 import org.fimbulwinter.engine.ecs.system.RegisterSystem;
 import org.fimbulwinter.engine.ecs.system.SystemStage;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -62,7 +63,7 @@ public class Window implements Component {
         glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
     }
 
-    @RegisterSystem(systemStage = SystemStage.POST_RENDER)
+    @RegisterSystem(systemStage = SystemStage.POST_RENDER, targetThread = TargetThread.MAIN)
     public static void refreshWindow(Window window) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 

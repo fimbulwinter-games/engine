@@ -15,8 +15,8 @@ import java.util.*;
 public class SystemTask implements Runnable {
     private final Method system;
     private final SystemStage systemStage;
+    private final TargetThread targetThread;
     private final AutoInjectable[] arguments;
-
     private SystemTask(Method system, AutoInjectable[] arguments) {
         Objects.requireNonNull(system);
         Objects.requireNonNull(arguments);
@@ -24,6 +24,7 @@ public class SystemTask implements Runnable {
         this.system = system;
         this.arguments = arguments;
         this.systemStage = system.getAnnotation(RegisterSystem.class).systemStage();
+        this.targetThread = system.getAnnotation(RegisterSystem.class).targetThread();
     }
 
     public static Optional<SystemTask> generateTask(Method system, Entity entity, ComponentSet components, Collection<? extends Resource> resources) {
@@ -57,6 +58,10 @@ public class SystemTask implements Runnable {
         } else {
             return Optional.empty();
         }
+    }
+
+    public TargetThread getTargetThread() {
+        return targetThread;
     }
 
     public SystemStage getSystemStage() {
