@@ -4,5 +4,7 @@ public enum SystemStage {
     PRE_UPDATE,
     UPDATE,
     POST_UPDATE,
-    RENDER
+    PRE_RENDER,
+    RENDER,
+    POST_RENDER
 }
