@@ -16,6 +16,7 @@ public class SystemTask implements Runnable {
     private final Method system;
     private final SystemStage systemStage;
     private final AutoInjectable[] arguments;
+
     private SystemTask(Method system, AutoInjectable[] arguments) {
         Objects.requireNonNull(system);
         Objects.requireNonNull(arguments);

@@ -17,8 +17,21 @@ public class Engine {
     private final SystemStorage systemStorage = new SystemStorage();
     private final Scheduler scheduler = new Scheduler();
     private final ResourceStorage resourceStorage = new ResourceStorage();
+    private boolean isRunning = false;
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void stop() {
+        isRunning = false;
+    }
 
     public void run() {
+        isRunning = true;
+        while (isRunning) {
+            tick();
+        }
     }
 
     public void tick() {

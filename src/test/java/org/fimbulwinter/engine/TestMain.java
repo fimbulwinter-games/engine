@@ -14,13 +14,8 @@ public class TestMain {
 
         game.registerSystems(TestSystems.class);
         game.registerResource(new Window());
-        game.tick();
         game.instantiate(new Transform(new Vector3f(0, 0, 0), new Vector3f(), new Vector3f()));
-        game.tick();
-        game.instantiate(new Transform(new Vector3f(1, 0, 0), new Vector3f(), new Vector3f()));
-        game.tick();
-        game.instantiate(new Transform(new Vector3f(1, 0, 0), new Vector3f(), new Vector3f()));
-        game.tick();
+        game.run();
     }
 
     public static class TestSystems {
