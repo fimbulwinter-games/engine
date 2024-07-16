@@ -10,8 +10,6 @@ public class Mesh2D {
     List<Integer> indices;
 
     public Mesh2D(List<Vector2f> vertexPos, List<Integer> indices) {
-        Objects.requireNonNull(vertexPos);
-        Objects.requireNonNull(indices);
         this.vertexPos = vertexPos;
         this.indices = indices;
     }
@@ -50,10 +48,12 @@ public class Mesh2D {
     }
 
     public void setVertexPos(List<Vector2f> vertexPos) {
+        Objects.requireNonNull(vertexPos);
         this.vertexPos = vertexPos;
     }
 
     public List<Integer> getIndices() {
+        Objects.requireNonNull(indices);
         return indices;
     }
 
