@@ -14,7 +14,7 @@ public class TestMain {
 
         game.registerSystems(TestSystems.class);
         game.registerSystems(Window.class);
-        game.instantiate(new Window());
+        game.registerResource(new Window());
         game.instantiate(new Transform(new Vector3f(0, 0, 0)));
         game.run();
     }
