@@ -3,6 +3,7 @@ package org.fimbulwinter.engine;
 import org.fimbulwinter.engine.ecs.Engine;
 import org.fimbulwinter.engine.ecs.component.base.Transform;
 import org.fimbulwinter.engine.ecs.entity.Entity;
+import org.fimbulwinter.engine.ecs.resource.base.Renderer;
 import org.fimbulwinter.engine.ecs.resource.base.Window;
 import org.fimbulwinter.engine.ecs.system.RegisterSystem;
 import org.fimbulwinter.engine.ecs.system.SystemStage;
@@ -14,7 +15,9 @@ public class TestMain {
 
         game.registerSystems(TestSystems.class);
         game.registerSystems(Window.class);
+        game.registerSystems(Renderer.class);
         game.registerResource(new Window());
+        game.registerResource(new Renderer());
         game.instantiate(new Transform(new Vector3f(0, 0, 0)));
         game.run();
     }
