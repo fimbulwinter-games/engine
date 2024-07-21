@@ -2,30 +2,24 @@ package org.fimbulwinter.engine.ecs.component.base;
 
 import org.joml.Vector2f;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class Mesh2D {
-    List<Vector2f> vertexPos;
-    List<Integer> indices;
+    float[] vertexPos;
 
-    public Mesh2D(List<Vector2f> vertexPos, List<Integer> indices) {
-        this.vertexPos = vertexPos;
-        this.indices = indices;
+    public Mesh2D(float[] vertexPos) {
+        setVertexPos(vertexPos);
     }
 
-    public static Mesh2D createSquare() {
-        final var vertexPos = List.of(
-                new Vector2f(-1.0f, -1.0f), // The bottom left corner
-                new Vector2f(-1.0f, 1.0f), // The top left corner
-                new Vector2f(1.0f, 1.0f), // The top right corner
-                new Vector2f(1.0f, -1.0f)); // The bottom right corner
-
-        final var indices = List.of(
-                0, 1, 2,
-                3, 0, 1);
-
-        return new Mesh2D(vertexPos, indices);
+    public Mesh2D(List<Vector2f> vertexPos) {
+        Objects.requireNonNull(vertexPos);
+        this.vertexPos = new float[vertexPos.size() * 2];
+        for (int i = 0; i < vertexPos.size(); ++i) {
+            this.vertexPos[i * 2] = vertexPos.get(i).x;
+            this.vertexPos[i * 2 + 1] = vertexPos.get(i).y;
+        }
     }
 
     @Override
@@ -33,31 +27,20 @@ public class Mesh2D {
         if (this == o) return true;
         if (!(o instanceof Mesh2D mesh2D)) return false;
 
-        return vertexPos.equals(mesh2D.vertexPos) && indices.equals(mesh2D.indices);
+        return Arrays.equals(vertexPos, mesh2D.vertexPos);
     }
 
     @Override
     public int hashCode() {
-        int result = vertexPos.hashCode();
-        result = 31 * result + indices.hashCode();
-        return result;
+        return Arrays.hashCode(vertexPos);
     }
 
-    public List<Vector2f> getVertexPos() {
+    public float[] getVertexPos() {
         return vertexPos;
     }
 
-    public void setVertexPos(List<Vector2f> vertexPos) {
+    public void setVertexPos(float[] vertexPos) {
         Objects.requireNonNull(vertexPos);
         this.vertexPos = vertexPos;
-    }
-
-    public List<Integer> getIndices() {
-        Objects.requireNonNull(indices);
-        return indices;
-    }
-
-    public void setIndices(List<Integer> indices) {
-        this.indices = indices;
     }
 }
